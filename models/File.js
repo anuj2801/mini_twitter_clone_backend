@@ -16,6 +16,9 @@ const userSchema = new mongoose.Schema({
   followers: {
     type: Array,
   },
+  following: {
+    type: Array,
+  },
   followBtn: {
     type: String,
     default: "Follow",

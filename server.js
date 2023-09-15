@@ -470,21 +470,33 @@ app.get("/profile/:userName", async (req, res) => {
 });
 
 //follow
-//userName= active user
-//user= profile
+//userName= whom to follow/unfollow
+//user= active user
+
 app.route("/user/:user/follow/:userName").post((req, res) => {
+  const loggedInUser = User.findOne({ username: req.params.user });
   User.findOne({ username: req.params.userName }, (err, doc) => {
     if (!err) {
       if (doc.username !== req.params.user) {
+        // console.log(doc);
         if (!doc.followers.includes(req.params.user)) {
           doc.followers.push(req.params.user);
+          // loggedInUser.following.push(req.params.userName)
+
           doc.followBtn = "Following";
           doc.save();
+          // loggedInUser.save();
+
         } else {
           let indexForUnFollow = doc.followers.indexOf(req.params.user);
           doc.followers.splice(indexForUnFollow, 1);
+
+          // const indexfollowing = loggedInUser.following.indexOf(userToFollow._id);
+          // loggedInUser.following.splice(indexfollowing, 1);
+
           doc.followBtn = "Follow";
           doc.save();
+          // loggedInUser.save();
         }
         return res.json({
           followers: doc.followers.length,
